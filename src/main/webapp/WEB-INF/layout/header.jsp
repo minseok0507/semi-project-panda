@@ -132,7 +132,7 @@
             <%-- profile - 로그인시 보임--%>
             <a class="flex items-center gap-2 hover:text-gray-200" href="${root}/mypage?usernum=${sessionScope.usernum}">
                 <img
-                        src="http://192.168.31.181:9000/semi-panda/panda/${sessionScope.userprofileimage}"
+                        src="https://minio.minseok.site/semi-panda/panda/${sessionScope.userprofileimage}"
                         width="32"
                         height="32"
                         class="rounded-full"

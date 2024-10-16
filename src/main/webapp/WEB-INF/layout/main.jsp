@@ -284,7 +284,7 @@
                });
                if(page === 1) {
 
-                  console.log(s)
+                  // console.log(s)
                   $("#item-seciton").html(s);
                } else {
                   $("#item-seciton").append(s);

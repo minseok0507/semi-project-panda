@@ -11,8 +11,10 @@
     <link href="/image/icon.png" rel="shortcut icon" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Dancing+Script:wght@400..700&family=East+Sea+Dokdo&family=Jua&family=Gaegu&family=Gamja+Flower&family=Pacifico&family=Single+Day&display=swap"
           rel="stylesheet">
@@ -64,7 +66,6 @@
     </style>
 </head>
 <c:set var="root" value="<%=request.getContextPath() %>" scope="application"/>
-<c:set var="filepath" value="http://192.168.31.181:9000"/>
 <body>
 <div class="mainlayout">
     <div id="header-tile" class="header-tile">
@@ -193,33 +194,8 @@
         <h1 class="text-xl font-bold text-[black] p-3">채팅방</h1>
         <div class="chat-list">
 
-            <!--
-// v0 by Vercel.
-// https://v0.dev/t/MWsK0IcOVFw
--->
-
             <div class="flex flex-col w-full max-w-md mx-auto rounded-lg">
                 <div class="flex-1" id="chatroom-list">
-
-                    <%--                    <a class="my-2 flex items-center gap-2 transition-colors hover:bg-muted" href="#">--%>
-                    <%--                      <span class="relative flex shrink-0 overflow-hidden rounded-full border w-12 h-12">--%>
-                    <%--                        <img class="aspect-square h-full w-full" alt="Chatroom Image"--%>
-                    <%--                             src="https://generated.vusercontent.net/placeholder-user.jpg"/>--%>
-                    <%--                      </span>--%>
-                    <%--                        <div class="flex-1 grid gap-1">--%>
-                    <%--                            <div class="flex items-center justify-between">--%>
-                    <%--                                <h3 class="text-base font-medium">민석잉</h3>--%>
-                    <%--                                <span class="text-xs text-muted-foreground">--%>
-                    <%--                                    서울 강남구 가로수길 5--%>
-                    <%--                                </span>--%>
-                    <%--                            </div>--%>
-                    <%--                            <p class="text-sm text-muted-foreground truncate">--%>
-                    <%--                                글 제목 임시글 어쩌고 글 제목 임시글 어쩌고 글 제목 임시글 어쩌고--%>
-                    <%--                            </p>--%>
-                    <%--                        </div>--%>
-                    <%--                    </a>--%>
-
-
                 </div>
             </div>
 
@@ -332,7 +308,7 @@
                     <a class="hover:bg-gray-100 p-2 flex items-center gap-2 transition-colors hover:bg-muted" onclick="chatStart(\${chatroom.chatroomnum})">
                       <span class="relative flex shrink-0 overflow-hidden rounded-full border w-12 h-12">
                         <img class="aspect-square h-full w-full" alt="Chatroom Image"
-                             src="http://192.168.31.181:9000/semi-panda/panda/\${chatroom.productuserprofile}"/>
+                             src="https://minio.minseok.site/semi-panda/panda/\${chatroom.productuserprofile}"/>
                       </span>
                         <div class="flex-1 grid gap-1">
                             <div class="flex items-center justify-between">
@@ -352,7 +328,7 @@
                     <a class="hover:bg-gray-100 p-2 flex items-center gap-2 transition-colors hover:bg-muted" onclick="chatStart(\${chatroom.chatroomnum})">
                       <span class="relative flex shrink-0 overflow-hidden rounded-full border w-12 h-12">
                         <img class="aspect-square h-full w-full" alt="Chatroom Image"
-                             src="http://192.168.31.181:9000/semi-panda/panda/\${chatroom.applyprofile}"/>
+                             src="https://minio.minseok.site/semi-panda/panda/\${chatroom.applyprofile}"/>
                       </span>
                         <div class="flex-1 grid gap-1">
                             <div class="flex items-center justify-between">
@@ -389,7 +365,7 @@
             .then(response => response.json())
             .then(data => {
                 document.getElementById("chattingArea").style.left = "30px";
-                ws = new WebSocket("ws://" + location.host + "/chatroom/" + chatRoom);
+                ws = new WebSocket("wss://" + location.host + "/chatroom/" + chatRoom);
                 document.getElementById("chating").innerHTML = "";
                 document.getElementById("roomId").value = chatRoom;
                 wsEvt(chatRoom);
@@ -403,7 +379,7 @@
             })
             .catch(error => {
                 console.error('Error fetching chat log:', error);
-                alert("접속 실패")
+                alert("chatStart 접속 실패")
                 window.location.reload()
             });
 
@@ -428,6 +404,10 @@
     // }
 
     function wsEvt(chatRoom) {
+        ws.onerror = function (error) {
+            console.error("WebSocket error:", error);
+        };
+
         ws.onopen = function (data) {
             //소켓이 열리면 동작
             fetch(`/chat/repository?chatroomnum=` + chatRoom)
@@ -440,7 +420,7 @@
                 })
                 .catch(error => {
                     console.error('Error fetching chat log:', error);
-                    alert("접속 실패")
+                    alert("onopen 접속 실패")
                     window.location.reload()
                 });
         }
@@ -468,7 +448,7 @@
                                         <span class="relative shrink-0 overflow-hidden w-10 h-10 rounded-full bg-[#4CAF50] text-white flex items-center justify-center border-2 border-[#4CAF50]">
                                             <span class="flex h-full w-full items-center justify-center rounded-full bg-muted">
                                                 <img class="aspect-square h-full w-full" alt="Seller"
-                                                   src="http://192.168.31.181:9000/semi-panda/panda/\${d.userProfile}"/>
+                                                   src="https://minio.minseok.site/semi-panda/panda/\${d.userProfile}"/>
                                             </span>
                                         </span>
                                     </div>
@@ -483,7 +463,7 @@
                                         <span class="relative shrink-0 overflow-hidden w-10 h-10 rounded-full bg-[#4CAF50] text-white flex items-center justify-center border-2 border-[#4CAF50]">
                                           <span class="flex h-full w-full items-center justify-center rounded-full bg-muted">
                                               <img class="aspect-square h-full w-full" alt="Seller"
-                                                   src="http://192.168.31.181:9000/semi-panda/panda/\${d.userProfile}"
+                                                   src="https://minio.minseok.site/semi-panda/panda/\${d.userProfile}"
                                                    onclick="location.href='/mypage?usernum=\${d.usernum}'"/>
                                           </span>
                                         </span>
@@ -527,7 +507,7 @@
                         <span class="relative shrink-0 overflow-hidden w-10 h-10 rounded-full bg-[#4CAF50] text-white flex items-center justify-center border-2 border-[#4CAF50]">
                             <span class="flex h-full w-full items-center justify-center rounded-full bg-muted">
                                 <img class="aspect-square h-full w-full" alt="Seller"
-                                   src="http://192.168.31.181:9000/semi-panda/panda/\${chat.userprofileimage}"/>
+                                   src="https://minio.minseok.site/semi-panda/panda/\${chat.userprofileimage}"/>
                             </span>
                         </span>
                     </div>
@@ -541,7 +521,7 @@
                         <span class="relative shrink-0 overflow-hidden w-10 h-10 rounded-full bg-[#4CAF50] text-white flex items-center justify-center border-2 border-[#4CAF50]">
                           <span class="flex h-full w-full items-center justify-center rounded-full bg-muted">
                               <img class="aspect-square h-full w-full" alt="Seller"
-                                   src="http://192.168.31.181:9000/semi-panda/panda/\${chat.userprofileimage}"
+                                   src="https://minio.minseok.site/semi-panda/panda/\${chat.userprofileimage}"
                                    onclick="location.href='/mypage?usernum=\${chat.sendusernum}'"/>
                           </span>
                         </span>
@@ -663,7 +643,7 @@
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             setConnected(true);
-            console.log('Connected: ' + frame);
+            // console.log('Connected: ' + frame);
             // 기본 안내멘트 추가
             showMessage("판다챗봇에 오신 것을 환영합니다!<br>" +
                 "무엇을 도와드릴까요?<br><br>" +

@@ -9,14 +9,16 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 
 @Configuration
 @EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer{
+public class WebSocketConfig implements WebSocketConfigurer {
 
     @Autowired
     SocketHandler socketHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(socketHandler, "/chatroom/*");
+        registry.addHandler(socketHandler, "/chatroom/*")
+                .setAllowedOrigins("https://panda.minseok.site", "http://localhost:8080");
+        ;
     }
 
 }
