@@ -19,7 +19,7 @@
 </head>
 <body>
 <form id="frm1">
-    <div class="g-recaptcha" data-sitekey="6Ldh4_0pAAAAAFZ33u3F4pw06gtabPhgMytSIham"></div>
+    <div class="g-recaptcha" data-sitekey="6LcyDmMqAAAAAC5mZrgIBhfmWqfKQ7s6QgMfpYTI"></div>
     <button type="button" id="qnaRegBtn">등록</button>
 </form>
 

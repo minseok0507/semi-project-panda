@@ -204,7 +204,7 @@
                         name="userbirthday"
                         id="dob" style="margin-bottom: 15px;"/>
 
-                    <div class="g-recaptcha" data-sitekey="6Ldh4_0pAAAAAFZ33u3F4pw06gtabPhgMytSIham" style="margin-bottom: 15px; justify-content: center; display: flex"></div>
+                    <div class="g-recaptcha" data-sitekey="6LcyDmMqAAAAAC5mZrgIBhfmWqfKQ7s6QgMfpYTI" style="margin-bottom: 15px; justify-content: center; display: flex"></div>
 
                 <button
                         class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 w-full bg-[#4CAF50] hover:bg-[#43a047] text-white"

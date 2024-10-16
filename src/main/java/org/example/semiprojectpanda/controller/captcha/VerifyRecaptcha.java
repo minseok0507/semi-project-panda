@@ -1,20 +1,19 @@
 package org.example.semiprojectpanda.controller.captcha;
 
+import lombok.extern.slf4j.Slf4j;
+
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-import javax.net.ssl.HttpsURLConnection;
-
-import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 public class VerifyRecaptcha {
     public static final String url = "https://www.google.com/recaptcha/api/siteverify";
     private final static String USER_AGENT = "Mozilla/5.0";
-    private static String secret = "6Ldh4_0pAAAAAMKg_7IYkRCq0yg_VE6FN9MwWIEM"; // local 사용 시 공백
+    private static String secret = "6LcyDmMqAAAAAJRG6ch-FwoXPJpaPJ2eYpukFLyP"; // local 사용 시 공백
 
 
     public static void setSecretKey(String key) {
